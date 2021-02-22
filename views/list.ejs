@@ -6,40 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="Description" content="Enter your description here" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"> -->
+    <link rel="stylesheet" href="CSS/style.css">
     <title>To Do List</title>
 </head>
 
 <body>
-    <div class="ml-4">
+    <div class="box" id="heading">
         <!-- read ejs docs for other ways to render ejs ctrl-f 'tags' -->
-
         <% if (kindOfDay === "Saturday" || kindOfDay === "Sunday") { %>
-            <h1 style="color: darkgoldenrod;" class="mt-4">
+            <h1 style="color: rgb(201, 200, 200);" class="mt-4">
                 <%= kindOfDay %> <br> To Do List</h1>
             <% } else{ %>
-                <h1 style="color: teal;" class="mt-4">
+                <h1 style="color:whitesmoke;" class="mt-4">
                     <%= kindOfDay %>
                         <br> To Do List</h1>
-
                 <% } %>
+    </div>
 
-                    <ul>
+    <div class="box">
+        <% for(var i=0; i<newListItems.length; i++) { %>
+            <div class="item">
+                <input type="checkbox">
+                <p>
+                    <%= newListItems[i] %>
 
-                        <% for(var i=0; i<newListItems.length; i++) { %>
-                            <li>
-                                <%= newListItems[i] %>
-                                    <% } %>
-                            </li>
+                </p>
+            </div>
+            <% } %>
 
-
-                    </ul>
-                    <form class="" action="/" method="post">
+                <div class="item">
+                    <form class="item" action="/" method="post">
                         <input type="text" name="newItems" id="">
-                        <button name="submit" type="submit">Add To List</button>
+                        <button name="submit" type="submit">+</button>
                     </form>
+                </div>
+
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>

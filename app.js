@@ -1,18 +1,19 @@
 const bodyParser = require("body-parser");
 const express = require('express');
 const ejs = require('ejs');
+const { static } = require("express");
 const app = express();
 var items = ["Buy Food", "Cook Food"];
 
 app.set('view engine', 'ejs'); // Must be placed after app is declared,  reads our markers inside veiws doc
 app.use(bodyParser.urlencoded({ extended: true })) //here is how we use express to read another document
     // this echos out what we see on our servers/site
+app.use(express.static("public"))
 app.get('/', function(req, res) {
-
     var today = new Date(); // Some vanilla JS
-    var options = { weekday: 'long', day: '2-digit', month: '2-digit' };
+    var options = { weekday: 'long', day: 'numeric', month: 'long' };
 
-    var day = today.toLocaleDateString("en-US");
+    var day = today.toLocaleDateString("en-US", options);
 
 
     res.render("list", { kindOfDay: day, newListItems: items })
