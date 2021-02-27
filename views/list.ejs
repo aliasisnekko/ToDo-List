@@ -14,15 +14,9 @@
 
 <body>
     <div class="box" id="heading">
-        <!-- read ejs docs for other ways to render ejs ctrl-f 'tags' -->
-        <% if (kindOfDay === "Saturday" || kindOfDay === "Sunday") { %>
-            <h1 style="color: rgb(201, 200, 200);" class="mt-4">
-                <%= kindOfDay %> <br> To Do List</h1>
-            <% } else{ %>
-                <h1 style="color:whitesmoke;" class="mt-4">
-                    <%= kindOfDay %>
-                        <br> To Do List</h1>
-                <% } %>
+        <h1>
+            <%= listTitle %>
+        </h1>
     </div>
 
     <div class="box">
@@ -39,7 +33,7 @@
                 <div class="item">
                     <form class="item" action="/" method="post">
                         <input type="text" name="newItems" placeholder="New Task" autocomplete="off" autocapitalize="on">
-                        <button name="submit" type="submit">+</button>
+                        <button name="list" value="<%= listTitle %>" type="submit">+</button>
                     </form>
                 </div>
 
