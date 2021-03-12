@@ -1,0 +1,133 @@
+html {
+    background: rgb(126, 147, 143);
+    background: linear-gradient(0deg, rgba(126, 147, 143, 1) 25%, rgba(207, 241, 234, 1) 100%);
+    min-height: 99.9%;
+    font-family: 'helvetica neue';
+    font-size: larger;
+}
+
+a {
+    color: rgb(39, 39, 39);
+    text-decoration: none !important;
+}
+
+.textHeading {
+    margin-top: 50px;
+    text-align: center;
+}
+
+li {
+    list-style-type: none;
+    font-weight: bold;
+    padding: 7px 30px 7px 30px;
+}
+
+a:hover {
+    color: white
+}
+
+h1 {
+    padding: 10px;
+}
+
+.box {
+    max-width: 400px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+#heading {
+    background: rgb(241, 207, 240);
+    background: linear-gradient(298deg, rgba(241, 207, 240, 1) 44%, rgba(0, 228, 185, 1) 100%);
+    text-align: center;
+    color: rgb(87, 83, 83);
+}
+
+.item {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #F1F1F1;
+}
+
+.item:last-child {
+    border-bottom: 0;
+}
+
+input:checked+p {
+    text-decoration: line-through;
+    text-decoration-color: #430070;
+}
+
+input[type="checkbox"] {
+    margin: 20px;
+    transform: scale(1.1.);
+    font-size: 0;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    cursor: pointer;
+}
+
+p {
+    margin: 0;
+    padding: 15px 20px 7px 20px;
+    font-size: 25px;
+    font-weight: 200;
+    color: #3c3949;
+}
+
+form.item {
+    text-align: center;
+    margin-left: 20px;
+}
+
+.green {
+    background-color: #285e09;
+    color: #000;
+}
+
+.green:hover {
+    background-color: #616b77;
+}
+
+button {
+    min-height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border-color: transparent;
+    color: #fff;
+    font-size: 30px;
+    padding-bottom: 6px;
+    border-width: 0;
+}
+
+input[type="text"] {
+    text-align: center;
+    height: 60px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 200;
+    width: 313px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: inset 0 -3px 0 0 #430070;
+}
+
+::placeholder {
+    color: grey;
+    opacity: 1;
+}
+
+footer {
+    color: white;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+}

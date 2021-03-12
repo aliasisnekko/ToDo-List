@@ -1,52 +1,136 @@
-const date = require(__dirname + '/date.js'); //is how we require other local js files as a module
-
 const bodyParser = require("body-parser");
-
-const express = require('express');
-
-const ejs = require('ejs');
-
-const { static } = require("express");
+const mongoose = require("mongoose");
+const express = require("express");
+const _ = require("lodash")
+var ObjectId = require('mongodb').ObjectID;
 
 const app = express();
 
-const items = [];
-const workItems = [];
+app.set('view engine', 'ejs');
 
-app.set('view engine', 'ejs'); // Must be placed after app is declared,  reads our markers inside veiws doc
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+//********C IN CRUD********* 
+mongoose.connect("mongodb+srv://admin-nekko:butthead12@cluster0.hfben.mongodb.net/todolistDB", { useNewUrlParser: true, useUnifiedTopology: true })
+    //schema is made to set a blueprint for our data in our db
+const itemsSchema = { name: String };
+
+//singular version is used to create a modal for our db
+const Item = mongoose.model('Item', itemsSchema);
+
+//this is how documents/items are created using that modal
+const item1 = new Item({
+    name: "Welcome! Please click the header for documentation."
+});
+
+app.get("/about", function(req, res) {
+    res.render("about");
+});
+const defaultItems = [item1];
+const listSchema = { name: String, items: [itemsSchema] };
+const List = mongoose.model('List', listSchema);
 
 
-app.use(bodyParser.urlencoded({ extended: true })) //here is how we use express to read another document
+
+//***********R U IN CRUD*********
+app.get("/", function(req, res) {
+    Item.find({}, function(err, foundItems) {
+        if (foundItems.length === 0) {
+            Item.insertMany(defaultItems, function(err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(foundItems.name, 'Successfully added items to collections');
+                }
+            });
+            res.redirect('/'); //not really sure why i used this
+        } else {
+            res.render("list", { listTitle: "Today", newListItems: foundItems });
+        }
+    });
+});
+
+app.get("/:customListName", function(req, res) {
+    const customListName = _.capitalize(req.params.customListName);
+    List.findOne({ name: customListName }, function(err, foundList) {
+        if (!err) {
+
+            if (!foundList) {
+                const list = new List({
+                    name: customListName,
+                    items: defaultItems
+                });
+
+                list.save();
+                res.redirect('/' + customListName)
+            } else
+                res.render("list", { listTitle: foundList.name, newListItems: foundList.items });
+        }
+        if (customListName === "About") { res.render('about') }
+    });
 
 
-app.use(express.static("public"))
-
-
-app.get('/', function(req, res) {
-    let day = date.getDate();
-    // let day = date.getDay() this would return just the day of the week after we create our own module
-    res.render("list", { listTitle: day, newListItems: items })
 
 });
 
-// this controls what happens when our button is pressed on our to list
+//*******HOW WE CAN UPDATE OUR DB AS A USER IN CRUD*******
 app.post("/", function(req, res) {
-
-    let item = req.body.newItems;
-
-    if (req.body.list === "Work List") {
-        workItems.push(item);
-        res.redirect('/work');
+    const itemName = req.body.newItem;
+    const listName = req.body.list;
+    const item = new Item({ name: itemName });
+    console.log("we have successfully added to the db");
+    if (listName === "Today") {
+        item.save();
+        res.redirect('/');
     } else {
-        items.push(item);
-        res.redirect("/");
+        List.findOne({ name: listName }, function(err, foundList) {
+            foundList.items.push(item);
+            foundList.save();
+            res.redirect("/" + listName)
+        });
     }
-})
-app.get('/work', function(req, res) {
+});
+//*******HOW WE CAN DELETE FROM OUR DB AS A USER IN CRUD*******
+app.post('/delete', function(req, res) {
+    const checkedItemID = req.body.checkbox;
+    const listName = req.body.listName;
+
+    if (listName === "Today") {
+        Item.findByIdAndDelete(checkedItemID, function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("we have successfully removed from the db");
+            }
+            res.redirect('/');
+
+        });
+    } else {
+
+        List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemID } } }, function(err, foundList) {
+            if (!err) { res.redirect("/" + listName) }
+        })
+
+    }
+
+});
+
+
+app.get("/work", function(req, res) {
+
     res.render("list", { listTitle: "Work List", newListItems: workItems });
 });
 
-// this is the creation of our server
-app.listen(3000, function() {
-    console.log("The server is being ran on port 3000");
+app.get("/about", function(req, res) {
+    res.render("about");
+});
+
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 3000;
+}
+
+app.listen(port, function() {
+    console.log("Server is up and running boss!");
 });

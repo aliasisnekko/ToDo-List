@@ -1,46 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("header") -%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="Description" content="Enter your description here" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"> -->
-    <link rel="stylesheet" href="CSS/style.css">
-    <title>To Do List</title>
-</head>
-
-<body>
     <div class="box" id="heading">
-        <h1>
-            <%= listTitle %>
-        </h1>
+        <a href="/about">
+            <h1>
+
+                <%=listTitle%>
+
+            </h1>
+        </a>
     </div>
 
     <div class="box">
-        <% for(var i=0; i<newListItems.length; i++) { %>
-            <div class="item">
-                <input type="checkbox">
-                <p>
-                    <%= newListItems[i] %>
-
-                </p>
-            </div>
-            <% } %>
-
+        <% newListItems.forEach(function(item) {  %>
+            <form action="/delete" method="post">
                 <div class="item">
-                    <form class="item" action="/" method="post">
-                        <input type="text" name="newItems" placeholder="New Task" autocomplete="off" autocapitalize="on">
-                        <button name="list" value="<%= listTitle %>" type="submit">+</button>
-                    </form>
+                    <input name="checkbox" value="<%=item._id%>" onChange="this.form.submit()" type="checkbox">
+                    <p>
+                        <%=item.name%>
+                    </p>
                 </div>
+                <input type="hidden" name="listName" value="<%= listTitle %>">
+            </form>
+            <%  }) %>
 
+
+                <form class="item" action="/" method="post">
+                    <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+                    <button value="<%=listTitle%>" class="green" type="submit" name="list">+</button>
+                </form>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-</body>
 
-</html>
+    <%- include("footer") -%>
